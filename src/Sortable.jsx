@@ -1,6 +1,6 @@
 /* eslint consistent-return: 0 */
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import SortableJS from 'sortablejs';
 
@@ -9,7 +9,7 @@ const store = {
     activeComponent: null
 };
 
-class Sortable extends Component {
+class Sortable extends PureComponent {
     static propTypes = {
         options: PropTypes.object,
         onChange: PropTypes.func,
@@ -24,8 +24,17 @@ class Sortable extends Component {
     sortable = null;
 
     componentDidMount() {
+        this.createSortable();
+    }
+    componentDidUpdate() {
+        this.createSortable();
+    }
+    componentWillUnmount() {
+        this.destroySortable();
+    }
+    createSortable = () => {
+        this.destroySortable();
         const options = { ...this.props.options };
-
         [
             'onChoose',
             'onStart',
@@ -78,15 +87,14 @@ class Sortable extends Component {
                 }, 0);
             };
         });
-
         this.sortable = SortableJS.create(ReactDOM.findDOMNode(this), options);
-    }
-    componentWillUnmount() {
+    };
+    destroySortable = () => {
         if (this.sortable) {
             this.sortable.destroy();
             this.sortable = null;
         }
-    }
+    };
     render() {
         const { tag: Component, ...props } = this.props;
 
