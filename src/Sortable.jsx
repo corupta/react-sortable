@@ -92,6 +92,8 @@ class Sortable extends PureComponent {
         this.sortable = SortableJS.create(ReactDOM.findDOMNode(this), options);
     };
     destroySortable = () => {
+        store.nextSibling = null;
+        store.activeComponent = null;
         if (this.sortable) {
             this.sortable.destroy();
             this.sortable = null;
