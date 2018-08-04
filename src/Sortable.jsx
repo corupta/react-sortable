@@ -26,7 +26,8 @@ class Sortable extends PureComponent {
     componentDidMount() {
         this.createSortable();
     }
-    componentDidUpdate() {
+    componentDidUpdate(prevProps) {
+        if (prevProps.options !== this.props.options || prevProps.onChange !== this.props.onChange
         this.createSortable();
     }
     componentWillUnmount() {
